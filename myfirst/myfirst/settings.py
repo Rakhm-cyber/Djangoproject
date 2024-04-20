@@ -25,13 +25,14 @@ SECRET_KEY = "django-insecure-+or16ezlw921m7g(@2^q=8i7myg=5f7wv+o)dwvrzq%@0#9i91
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     "dbcore",
+    "unfold",  # before django.contrib.admin
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
