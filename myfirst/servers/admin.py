@@ -1,19 +1,19 @@
 from django.contrib import admin
-
-from dbcore.models import Type, Database, Port
 from unfold.admin import ModelAdmin
 
+from servers.models import Server_type, Server, Database_server
 
-@admin.register(Type)
+
+@admin.register(Server_type)
 class CustomAdminClass(ModelAdmin):
     pass
 
 
-@admin.register(Database)
+@admin.register(Server)
 class CustomAdminClass(ModelAdmin):
     pass
 
 
-@admin.register(Port)
+@admin.register(Database_server)
 class CustomAdminClass(ModelAdmin):
     pass

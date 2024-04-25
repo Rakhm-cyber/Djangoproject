@@ -18,6 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+admin.site.site_header = 'DataHub'
+admin.site.site_title = "DataHub"
+admin.site.index_title = 'DataHub'
+
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]

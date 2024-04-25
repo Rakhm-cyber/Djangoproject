@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from os import environ, path
+from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -32,6 +37,9 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "dbcore",
+    "servers",
+    "backups",
+    "alerts",
     "unfold",  # before django.contrib.admin
     "django.contrib.admin",
     "django.contrib.auth",
@@ -56,8 +64,8 @@ ROOT_URLCONF = "myfirst.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [
-            BASE_DIR / "templates",
+        "DIRS": [
+            path.normpath(path.join(BASE_DIR, "myfirst/templates")),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -66,6 +74,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "myfirst.context_processors.variables",
             ],
         },
     },
@@ -115,15 +124,104 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ("ru", _("Русский")),
+    ("en", _("English")),
+)
+
+LOGIN_URL = "admin:login"
+
+LOGIN_REDIRECT_URL = reverse_lazy("admin:index")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [BASE_DIR / "myfirst" / "static"]
+
+STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_URL = "/media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+UNFOLD = {
+    "SITE_HEADER": _("DataHub Admin"),
+    "SITE_TITLE": _("DataHub Admin"),
+    "SITE_SYMBOL": "settings",
+    "SHOW_HISTORY": False,
+    "ENVIRONMENT": "myfirst.utils.environment_callback",
+    "DASHBOARD_CALLBACK": "myfirst.views.dashboard_callback",
+    "LOGIN": {
+        "image": lambda request: static("images/login.jpeg"),
+    },
+    "STYLES": [
+        # lambda request: static("css/styles.css"),
+    ],
+    "SCRIPTS": [
+        # lambda request: static("js/chart.min.js"),
+    ],
+    "TABS": [
+        {
+            "models": ["dbcore.Database", "dbcore.Type"],
+            "items": [
+                {
+                    "title": _("Databases"),
+                    "icon": "precision_manufacturing",
+                    "link": reverse_lazy("admin:dbcore_database_changelist"),
+                },
+                {
+                    "title": _("Constructors"),
+                    "icon": "precision_manufacturing",
+                    "link": reverse_lazy("admin:dbcore_type_changelist"),
+                },
+            ],
+        },
+    ],
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": _("Navigation"),
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                    },
+                    {
+                        "title": _("Databases"),
+                        "icon": "sports_motorsports",
+                        "link": lambda request: reverse_lazy(
+                            "admin:dbcore_database_changelist"
+                        ),
+                        # "link": reverse_lazy("admin:formula_driver_changelist"),
+                    },
+                ],
+            },
+            {
+                "separator": True,
+                "items": [
+                    {
+                        "title": _("Users"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                    },
+                    {
+                        "title": _("Groups"),
+                        "icon": "group",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}
+
+PLAUSIBLE_DOMAIN = "DataHub"
