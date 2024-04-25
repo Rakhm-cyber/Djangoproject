@@ -166,38 +166,40 @@ UNFOLD = {
     "SCRIPTS": [
         # lambda request: static("js/chart.min.js"),
     ],
-    "TABS": [
-        {
-            "models": ["dbcore.Database", "dbcore.Type"],
-            "items": [
-                {
-                    "title": _("Databases"),
-                    "icon": "precision_manufacturing",
-                    "link": reverse_lazy("admin:dbcore_database_changelist"),
-                },
-                {
-                    "title": _("Constructors"),
-                    "icon": "precision_manufacturing",
-                    "link": reverse_lazy("admin:dbcore_type_changelist"),
-                },
-            ],
-        },
-    ],
+
     "SIDEBAR": {
         "show_search": True,
         "show_all_applications": True,
         "navigation": [
             {
-                "title": _("Navigation"),
+                "title": _("Databases"),
                 "items": [
                     {
                         "title": _("Dashboard"),
-                        "icon": "dashboard",
+                        "icon": "browse_activity",
                         "link": reverse_lazy("admin:index"),
                     },
                     {
-                        "title": _("Databases"),
-                        "icon": "sports_motorsports",
+                        "title": _("Databases Instances"),
+                        "icon": "apps",
+                        "link": lambda request: reverse_lazy(
+                            "admin:dbcore_database_changelist"
+                        ),
+                        # "link": reverse_lazy("admin:formula_driver_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Servers"),
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "browse_activity",
+                        "link": reverse_lazy("admin:index"),
+                    },
+                    {
+                        "title": _("Servers instances"),
+                        "icon": "Dns",
                         "link": lambda request: reverse_lazy(
                             "admin:dbcore_database_changelist"
                         ),
