@@ -20,8 +20,8 @@ def get_server_load():
 
 def dashboard_callback(request, context):
 
-    performance_negative2 = [[-1, -random.randrange(1, 28)] for i in range(1, 7)]
-    performance_negative3 = [[-1, -random.randrange(8, 28)] for i in range(1, 7)]
+    performance_negative2 = [[-1, -random.randrange(1, 28)] for i in range(1, 8)]
+    performance_negative3 = [[-1, -random.randrange(8, 28)] for i in range(1, 8)]
     cpu_load, memory_usage, ramTotal, ramUsed, ramUsedInPercent, diskUsed = get_server_load()
     context.update(
         {
@@ -31,7 +31,7 @@ def dashboard_callback(request, context):
                     "metric": f"{memory_usage}mb",
                 },
                 {
-                    "title": "CPU load",
+                        "title": "CPU load",
                     "metric": f"{cpu_load}ed",
                 },
                 {
@@ -43,7 +43,7 @@ def dashboard_callback(request, context):
                 {
                     "title": _("CPU Load"),
                     "chart": json.dumps({
-                        "labels": ["16:00", "16:01","16:03","16:04","16:05","16:06"],
+                        "labels": ["16:00", "16:01","16:02","16:03","16:04","16:05","16:06"],
                         "datasets": [
                             {"data": performance_negative2, "borderColor": "#f43f5e"}
                         ],
@@ -57,7 +57,7 @@ def dashboard_callback(request, context):
                 ),
                 "chart": json.dumps(
                     {
-                        "labels": ["16:00", "16:01","16:03","16:04","16:05","16:06"],
+                        "labels": ["16:00", "16:01","16:02","16:03","16:04","16:05","16:06"],
                         "datasets": [
                             {"data": performance_negative3, "borderColor": "#f43f5e"}
                         ],
